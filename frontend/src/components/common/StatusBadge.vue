@@ -6,10 +6,10 @@ const props = defineProps<{
 }>()
 
 const statusConfig = {
-  PENDING: { label: 'Pending', class: 'status-pending' },
-  RUNNING: { label: 'Running', class: 'status-running' },
-  DONE: { label: 'Done', class: 'status-done' },
-  FAILED: { label: 'Failed', class: 'status-failed' }
+  PENDING: { label: '等待中', class: 'status-pending' },
+  RUNNING: { label: '运行中', class: 'status-running' },
+  DONE: { label: '已完成', class: 'status-done' },
+  FAILED: { label: '失败', class: 'status-failed' }
 }
 
 const config = statusConfig[props.status] || statusConfig.PENDING

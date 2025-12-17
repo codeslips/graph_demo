@@ -37,10 +37,10 @@ function formatDate(dateStr: string | null) {
 <template>
   <div class="task-detail-view">
     <header class="view-header">
-      <button class="back-btn" @click="goBack">← Back to Tasks</button>
+      <button class="back-btn" @click="goBack">← 返回任务列表</button>
       <div class="header-content" v-if="taskStore.currentTask">
         <div class="header-left">
-          <h1>Task Details</h1>
+          <h1>任务详情</h1>
           <StatusBadge :status="taskStore.currentTask.status" />
         </div>
         <button
@@ -48,48 +48,48 @@ function formatDate(dateStr: string | null) {
           class="view-graph-btn"
           @click="viewGraph"
         >
-          View Graph →
+          查看图谱 →
         </button>
       </div>
     </header>
 
     <div v-if="taskStore.loading && !taskStore.currentTask" class="loading-state">
       <div class="spinner"></div>
-      <p>Loading task details...</p>
+      <p>加载任务详情...</p>
     </div>
 
     <template v-else-if="taskStore.currentTask">
       <section class="task-info">
         <div class="info-grid">
           <div class="info-item">
-            <span class="info-label">Target URL</span>
+            <span class="info-label">目标 URL</span>
             <a :href="taskStore.currentTask.target_url" target="_blank" class="info-value link">
               {{ taskStore.currentTask.target_url }}
             </a>
           </div>
 
           <div class="info-item">
-            <span class="info-label">Crawl Type</span>
+            <span class="info-label">爬取类型</span>
             <span class="info-value">{{ taskStore.currentTask.crawl_type }}</span>
           </div>
 
           <div class="info-item">
-            <span class="info-label">Created</span>
+            <span class="info-label">创建时间</span>
             <span class="info-value">{{ formatDate(taskStore.currentTask.created_at) }}</span>
           </div>
 
           <div class="info-item">
-            <span class="info-label">Started</span>
+            <span class="info-label">开始时间</span>
             <span class="info-value">{{ formatDate(taskStore.currentTask.started_at) }}</span>
           </div>
 
           <div class="info-item">
-            <span class="info-label">Finished</span>
+            <span class="info-label">结束时间</span>
             <span class="info-value">{{ formatDate(taskStore.currentTask.finished_at) }}</span>
           </div>
 
           <div class="info-item">
-            <span class="info-label">Total Items</span>
+            <span class="info-label">总条目</span>
             <span class="info-value highlight">{{ taskStore.currentTask.total_items }}</span>
           </div>
         </div>
@@ -101,15 +101,15 @@ function formatDate(dateStr: string | null) {
         />
 
         <div v-if="taskStore.currentTask.error_message" class="error-box">
-          <strong>Error:</strong> {{ taskStore.currentTask.error_message }}
+          <strong>错误:</strong> {{ taskStore.currentTask.error_message }}
         </div>
       </section>
 
       <section class="items-section">
-        <h2>Crawled Items ({{ taskStore.currentItems.length }})</h2>
+        <h2>已爬取条目 ({{ taskStore.currentItems.length }})</h2>
 
         <div v-if="taskStore.currentItems.length === 0" class="empty-items">
-          <p>No items crawled yet</p>
+          <p>暂无爬取数据</p>
         </div>
 
         <div v-else class="items-list">

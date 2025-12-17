@@ -15,6 +15,8 @@ help:
 	@echo "  make logs         - View logs (all services)"
 	@echo "  make logs-backend - View backend logs"
 	@echo "  make logs-celery  - View celery logs"
+	@echo "  make install-deps - Install frontend dependencies (node_modules)"
+	@echo "  make install-pkg pkg=<name> - Add frontend package (e.g., make install-pkg pkg=dayjs)"
 	@echo "  make shell        - Open Django shell"
 	@echo "  make bash         - Open bash in backend container"
 	@echo "  make migrate      - Run database migrations"
@@ -54,6 +56,13 @@ shell:
 
 bash:
 	docker compose -f docker-compose.yml -f docker-compose.dev.yml exec backend bash
+
+# Frontend operations
+install-deps:
+	docker compose -f docker-compose.yml -f docker-compose.dev.yml run --rm frontend pnpm install
+
+install-pkg:
+	docker compose -f docker-compose.yml -f docker-compose.dev.yml exec frontend pnpm add $(pkg)
 
 # Database operations
 migrate:

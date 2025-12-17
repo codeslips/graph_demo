@@ -10,10 +10,10 @@ const targetUrl = ref('https://www.thepaper.cn/channel_25953')
 const crawlType = ref<CrawlType>('news_list')
 const isSubmitting = ref(false)
 
-const crawlTypes: { value: CrawlType; label: string }[] = [
-  { value: 'news_list', label: 'News List (Multiple Articles)' },
-  { value: 'article', label: 'Single Article' },
-  { value: 'channel', label: 'Full Channel' }
+    const crawlTypes: { value: CrawlType; label: string }[] = [
+  { value: 'news_list', label: '新闻列表 (多篇文章)' },
+  { value: 'article', label: '单篇文章' },
+  { value: 'channel', label: '完整频道' }
 ]
 
 async function handleSubmit() {
@@ -35,10 +35,10 @@ async function handleSubmit() {
 
 <template>
   <form class="task-form" @submit.prevent="handleSubmit">
-    <h3 class="form-title">Create New Crawl Task</h3>
+    <h3 class="form-title">创建新爬取任务</h3>
 
     <div class="form-group">
-      <label for="target-url">Target URL</label>
+      <label for="target-url">目标 URL</label>
       <input
         id="target-url"
         v-model="targetUrl"
@@ -47,11 +47,11 @@ async function handleSubmit() {
         required
         :disabled="isSubmitting"
       />
-      <span class="hint">Enter a ThePaper channel or article URL</span>
+      <span class="hint">输入澎湃新闻频道或文章 URL</span>
     </div>
 
     <div class="form-group">
-      <label for="crawl-type">Crawl Type</label>
+      <label for="crawl-type">爬取类型</label>
       <select id="crawl-type" v-model="crawlType" :disabled="isSubmitting">
         <option v-for="type in crawlTypes" :key="type.value" :value="type.value">
           {{ type.label }}
@@ -61,7 +61,7 @@ async function handleSubmit() {
 
     <button type="submit" class="submit-btn" :disabled="isSubmitting || !targetUrl.trim()">
       <span v-if="isSubmitting" class="spinner"></span>
-      {{ isSubmitting ? 'Starting...' : 'Start Crawl' }}
+      {{ isSubmitting ? '启动中...' : '开始爬取' }}
     </button>
   </form>
 </template>

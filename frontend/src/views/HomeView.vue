@@ -7,16 +7,15 @@ import { RouterLink } from 'vue-router'
     <section class="hero">
       <div class="hero-content">
         <h1 class="hero-title">
-          <span class="gradient-text">ThePaper Graph</span>
+          <span class="gradient-text">澎湃图谱</span>
         </h1>
         <p class="hero-subtitle">
-          Explore news relationships through interactive knowledge graphs.
-          Crawl articles from 澎湃新闻 and visualize connections between
-          channels, articles, and tags.
+          通过交互式知识图谱探索新闻关系。
+          自动抓取澎湃新闻文章，并可视化频道、文章和标签之间的连接。
         </p>
         <div class="hero-actions">
           <RouterLink to="/tasks" class="btn btn-primary">
-            Get Started →
+            开始使用 →
           </RouterLink>
         </div>
       </div>
@@ -35,20 +34,20 @@ import { RouterLink } from 'vue-router'
     <section class="features">
       <div class="feature-card">
         <div class="feature-icon">🕷️</div>
-        <h3>Smart Crawling</h3>
-        <p>Async crawl engine powered by Celery. Extract articles, authors, and tags automatically.</p>
+        <h3>智能爬取</h3>
+        <p>基于 Celery 的异步爬虫引擎。自动提取文章、作者和标签。</p>
       </div>
 
       <div class="feature-card">
         <div class="feature-icon">🔗</div>
-        <h3>Graph Storage</h3>
-        <p>Neo4j graph database stores relationships between articles, channels, and keywords.</p>
+        <h3>图谱存储</h3>
+        <p>Neo4j 图数据库存储文章、频道和关键词之间的关系。</p>
       </div>
 
       <div class="feature-card">
         <div class="feature-icon">📊</div>
-        <h3>Interactive Visualization</h3>
-        <p>Explore knowledge graphs with force-directed layouts. Click nodes to dive deeper.</p>
+        <h3>交互式可视化</h3>
+        <p>使用力导向图探索知识图谱。点击节点查看详情。</p>
       </div>
     </section>
 

@@ -14,7 +14,7 @@ const legendItems = [
 
 <template>
   <div class="graph-legend">
-    <div class="legend-title">Graph Legend</div>
+    <div class="legend-title">图谱图例</div>
 
     <div class="legend-items">
       <div v-for="item in legendItems" :key="item.type" class="legend-item">
@@ -29,11 +29,11 @@ const legendItems = [
     <div v-if="stats" class="legend-stats">
       <div class="stat">
         <span class="stat-value">{{ stats.totalNodes }}</span>
-        <span class="stat-label">Nodes</span>
+        <span class="stat-label">节点</span>
       </div>
       <div class="stat">
         <span class="stat-value">{{ stats.totalEdges }}</span>
-        <span class="stat-label">Edges</span>
+        <span class="stat-label">关系</span>
       </div>
     </div>
   </div>

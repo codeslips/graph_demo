@@ -35,7 +35,7 @@ function viewGraph() {
 }
 
 function handleDelete() {
-  if (confirm('Are you sure you want to delete this task?')) {
+  if (confirm('确定要删除此任务吗？')) {
     emit('delete', props.task.id)
   }
 }
@@ -56,11 +56,11 @@ function handleDelete() {
       <div class="task-stats">
         <span class="stat">
           <span class="stat-value">{{ task.total_items }}</span>
-          <span class="stat-label">items</span>
+          <span class="stat-label">条目</span>
         </span>
         <span class="stat">
           <span class="stat-value">{{ task.crawl_type }}</span>
-          <span class="stat-label">type</span>
+          <span class="stat-label">类型</span>
         </span>
       </div>
 
@@ -71,9 +71,9 @@ function handleDelete() {
 
     <div class="card-actions">
       <button v-if="canViewGraph" class="action-btn primary" @click.stop="viewGraph">
-        View Graph
+        查看图谱
       </button>
-      <button class="action-btn danger" @click.stop="handleDelete">Delete</button>
+      <button class="action-btn danger" @click.stop="handleDelete">删除</button>
     </div>
   </div>
 </template>

@@ -13,16 +13,16 @@ const isGraphView = computed(() => route.name === 'graph')
       <div class="nav-brand">
         <RouterLink to="/" class="brand-link">
           <span class="brand-icon">📰</span>
-          <span class="brand-text">ThePaper Graph</span>
+          <span class="brand-text">澎湃图谱</span>
         </RouterLink>
       </div>
 
       <div class="nav-links">
         <RouterLink to="/" class="nav-link" :class="{ active: route.name === 'home' }">
-          Home
+          首页
         </RouterLink>
         <RouterLink to="/tasks" class="nav-link" :class="{ active: route.name === 'tasks' }">
-          Tasks
+          任务
         </RouterLink>
       </div>
     </nav>
@@ -49,9 +49,13 @@ const isGraphView = computed(() => route.name === 'graph')
   align-items: center;
   justify-content: space-between;
   padding: 0 2rem;
-  height: 60px;
-  background: linear-gradient(180deg, #12121a 0%, #0a0a12 100%);
-  border-bottom: 1px solid #2d2d44;
+  height: 64px;
+  background: rgba(10, 10, 18, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .nav-brand {
@@ -71,12 +75,13 @@ const isGraphView = computed(() => route.name === 'graph')
 }
 
 .brand-text {
-  font-size: 1.1rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #e0e0e0 0%, #8b5cf6 100%);
+  background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: -0.02em;
 }
 
 .nav-links {
@@ -86,22 +91,22 @@ const isGraphView = computed(() => route.name === 'graph')
 
 .nav-link {
   padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #a0a0b0;
+  color: var(--color-text-secondary);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
 }
 
 .nav-link:hover {
-  color: #e0e0e0;
-  background: #1e1e2e;
+  color: var(--color-text-primary);
+  background: var(--color-bg-hover);
 }
 
 .nav-link.active {
-  color: #e0e0e0;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+  color: var(--color-accent);
+  background: rgba(99, 102, 241, 0.1);
 }
 
 .app-main {

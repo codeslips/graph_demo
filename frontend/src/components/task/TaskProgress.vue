@@ -11,9 +11,9 @@ defineProps<{
   <div class="task-progress">
     <div class="progress-header">
       <span class="progress-label">
-        {{ status === 'RUNNING' ? 'Crawling in progress...' : 'Crawl status' }}
+        {{ status === 'RUNNING' ? '爬取进行中...' : '爬取状态' }}
       </span>
-      <span class="progress-count">{{ totalItems }} items</span>
+      <span class="progress-count">{{ totalItems }} 条目</span>
     </div>
 
     <div class="progress-bar-container">

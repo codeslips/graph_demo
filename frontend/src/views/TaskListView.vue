@@ -53,8 +53,8 @@ async function handleDeleteTask(taskId: string) {
 <template>
   <div class="task-list-view">
     <header class="view-header">
-      <h1>Crawl Tasks</h1>
-      <p class="subtitle">Manage ThePaper news crawling tasks</p>
+      <h1>爬取任务</h1>
+      <p class="subtitle">管理澎湃新闻爬取任务</p>
     </header>
 
     <div class="content-grid">
@@ -62,17 +62,17 @@ async function handleDeleteTask(taskId: string) {
         <TaskForm @submit="handleCreateTask" />
 
         <div class="stats-card">
-          <h4>Task Summary</h4>
+          <h4>任务概览</h4>
           <div class="stat-row">
-            <span class="stat-label">Total</span>
+            <span class="stat-label">总计</span>
             <span class="stat-value">{{ taskStore.tasks.length }}</span>
           </div>
           <div class="stat-row">
-            <span class="stat-label">Running</span>
+            <span class="stat-label">运行中</span>
             <span class="stat-value running">{{ taskStore.runningTasks.length }}</span>
           </div>
           <div class="stat-row">
-            <span class="stat-label">Completed</span>
+            <span class="stat-label">已完成</span>
             <span class="stat-value completed">{{ taskStore.completedTasks.length }}</span>
           </div>
         </div>
@@ -81,13 +81,13 @@ async function handleDeleteTask(taskId: string) {
       <main class="task-list">
         <div v-if="taskStore.loading && taskStore.tasks.length === 0" class="loading-state">
           <div class="spinner"></div>
-          <p>Loading tasks...</p>
+          <p>加载任务中...</p>
         </div>
 
         <div v-else-if="taskStore.tasks.length === 0" class="empty-state">
           <div class="empty-icon">📋</div>
-          <h3>No tasks yet</h3>
-          <p>Create a new crawl task to get started</p>
+          <h3>暂无任务</h3>
+          <p>创建新任务以开始</p>
         </div>
 
         <div v-else class="task-grid">
@@ -105,7 +105,7 @@ async function handleDeleteTask(taskId: string) {
             :disabled="taskStore.loading"
             @click="taskStore.fetchTasks(taskStore.pagination.page + 1)"
           >
-            Load More
+            加载更多
           </button>
         </div>
       </main>

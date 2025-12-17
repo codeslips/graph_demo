@@ -22,6 +22,13 @@ const nodeColors: Record<string, string> = {
   Tag: '#10b981'
 }
 
+// Node labels translation
+const nodeLabels: Record<string, string> = {
+  Channel: '频道',
+  Article: '文章',
+  Tag: '标签'
+}
+
 // Node sizes by type
 const nodeSizes: Record<string, number> = {
   Channel: 35,
@@ -31,16 +38,23 @@ const nodeSizes: Record<string, number> = {
 
 const chartData = computed(() => {
   const categories = [
-    { name: 'Channel' },
-    { name: 'Article' },
-    { name: 'Tag' }
+    { name: nodeLabels.Channel },
+    { name: nodeLabels.Article },
+    { name: nodeLabels.Tag }
   ]
+
+  // Map original type to category index
+  const typeToIndex = {
+    Channel: 0,
+    Article: 1,
+    Tag: 2
+  }
 
   const data = props.nodes.map((node) => ({
     id: node.id,
     name: node.label,
     symbolSize: nodeSizes[node.type] || 20,
-    category: categories.findIndex((c) => c.name === node.type),
+    category: typeToIndex[node.type as keyof typeof typeToIndex] ?? -1,
     itemStyle: {
       color: nodeColors[node.type] || '#6366f1'
     },
@@ -93,7 +107,7 @@ function updateChart() {
       },
       formatter: (params: any) => {
         if (params.dataType === 'node') {
-          return `<strong>${params.name}</strong><br/>Type: ${chartData.value.categories[params.data.category]?.name || 'Unknown'}`
+          return `<strong>${params.name}</strong><br/>类型: ${chartData.value.categories[params.data.category]?.name || '未知'}`
         }
         return ''
       }

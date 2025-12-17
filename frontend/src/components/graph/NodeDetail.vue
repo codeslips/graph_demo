@@ -23,18 +23,18 @@ const displayProperties = computed(() => {
   const items: { label: string; value: string }[] = []
 
   if (type === 'Article') {
-    if (properties.title) items.push({ label: 'Title', value: String(properties.title) })
-    if (properties.author) items.push({ label: 'Author', value: String(properties.author) })
-    if (properties.pubTime) items.push({ label: 'Published', value: String(properties.pubTime) })
-    if (properties.summary) items.push({ label: 'Summary', value: String(properties.summary) })
-    if (properties.url) items.push({ label: 'URL', value: String(properties.url) })
+    if (properties.title) items.push({ label: '标题', value: String(properties.title) })
+    if (properties.author) items.push({ label: '作者', value: String(properties.author) })
+    if (properties.pubTime) items.push({ label: '发布时间', value: String(properties.pubTime) })
+    if (properties.summary) items.push({ label: '摘要', value: String(properties.summary) })
+    if (properties.url) items.push({ label: '链接', value: String(properties.url) })
   } else if (type === 'Channel') {
-    if (properties.name) items.push({ label: 'Name', value: String(properties.name) })
-    if (properties.desc) items.push({ label: 'Description', value: String(properties.desc) })
-    if (properties.nodeId) items.push({ label: 'Node ID', value: String(properties.nodeId) })
+    if (properties.name) items.push({ label: '名称', value: String(properties.name) })
+    if (properties.desc) items.push({ label: '描述', value: String(properties.desc) })
+    if (properties.nodeId) items.push({ label: '节点 ID', value: String(properties.nodeId) })
   } else if (type === 'Tag') {
-    if (properties.name) items.push({ label: 'Name', value: String(properties.name) })
-    if (properties.tagId) items.push({ label: 'Tag ID', value: String(properties.tagId) })
+    if (properties.name) items.push({ label: '名称', value: String(properties.name) })
+    if (properties.tagId) items.push({ label: '标签 ID', value: String(properties.tagId) })
   }
 
   return items
@@ -58,15 +58,15 @@ const displayProperties = computed(() => {
           <span class="property-label">{{ prop.label }}</span>
           <span
             class="property-value"
-            :class="{ 'is-url': prop.label === 'URL' }"
+            :class="{ 'is-url': prop.label === '链接' }"
           >
             <a
-              v-if="prop.label === 'URL'"
+              v-if="prop.label === '链接'"
               :href="prop.value"
               target="_blank"
               rel="noopener"
             >
-              Open Article →
+              打开文章 →
             </a>
             <template v-else>{{ prop.value }}</template>
           </span>

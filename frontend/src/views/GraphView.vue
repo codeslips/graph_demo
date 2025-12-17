@@ -48,12 +48,12 @@ async function handleSearch() {
 <template>
   <div class="graph-view">
     <header class="view-header">
-      <button class="back-btn" @click="goBack">← Back to Tasks</button>
+      <button class="back-btn" @click="goBack">← 返回任务列表</button>
       <div class="header-content">
         <div>
-          <h1>Knowledge Graph</h1>
+          <h1>知识图谱</h1>
           <p v-if="taskStore.currentTask" class="task-info">
-            {{ taskStore.currentTask.total_items }} articles from
+            {{ taskStore.currentTask.total_items }} 篇文章来自
             <span class="highlight">{{ taskStore.currentTask.target_url }}</span>
           </p>
         </div>
@@ -66,13 +66,13 @@ async function handleSearch() {
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search nodes..."
+            placeholder="搜索节点..."
             @input="handleSearch"
           />
         </div>
 
         <div v-if="graphStore.searchResults.length > 0" class="search-results">
-          <h4>Search Results</h4>
+          <h4>搜索结果</h4>
           <div
             v-for="result in graphStore.searchResults"
             :key="result.id"
@@ -89,7 +89,7 @@ async function handleSearch() {
         <GraphLegend :stats="graphStore.stats" />
 
         <div class="keywords-section">
-          <h4>Popular Tags</h4>
+          <h4>热门标签</h4>
           <div class="keyword-cloud">
             <span
               v-for="keyword in graphStore.keywords.slice(0, 15)"
@@ -106,13 +106,13 @@ async function handleSearch() {
       <main class="graph-container">
         <div v-if="graphStore.loading" class="loading-overlay">
           <div class="spinner"></div>
-          <p>Loading graph data...</p>
+          <p>加载图谱数据...</p>
         </div>
 
         <div v-else-if="graphStore.nodes.length === 0" class="empty-state">
           <div class="empty-icon">🕸️</div>
-          <h3>No Graph Data</h3>
-          <p>This task has no synced data yet</p>
+          <h3>暂无图谱数据</h3>
+          <p>该任务暂无同步数据</p>
         </div>
 
         <template v-else>
