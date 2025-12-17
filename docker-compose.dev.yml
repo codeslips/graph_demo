@@ -1,0 +1,54 @@
+version: "3.8"
+
+# ===========================================
+# Development Overrides
+# ===========================================
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  # ===========================================
+  # Django Backend (Development)
+  # ===========================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+      - backend_venv:/app/.venv
+    environment:
+      - DEBUG=True
+
+  # ===========================================
+  # Celery Worker (Development)
+  # ===========================================
+  celery:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    command: celery -A config worker -l DEBUG --concurrency=1
+    volumes:
+      - ./backend:/app
+      - backend_venv:/app/.venv
+    environment:
+      - DEBUG=True
+
+  # ===========================================
+  # Vue Frontend (Development with HMR)
+  # ===========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: pnpm dev --host 0.0.0.0
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+
+volumes:
+  backend_venv:
+  frontend_node_modules:
+

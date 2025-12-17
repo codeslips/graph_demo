@@ -1,0 +1,24 @@
+# Django
+Django>=5.0,<6.0
+django-ninja>=1.0,<2.0
+
+# Database
+psycopg2-binary>=2.9,<3.0
+
+# Celery
+celery>=5.3,<6.0
+redis>=5.0,<6.0
+
+# Neo4j
+neo4j>=5.0,<6.0
+
+# HTTP Client (for crawler)
+httpx>=0.25,<1.0
+
+# HTML Parsing
+beautifulsoup4>=4.12,<5.0
+lxml>=5.0,<6.0
+
+# Utilities
+python-dotenv>=1.0,<2.0
+
