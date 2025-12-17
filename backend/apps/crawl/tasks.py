@@ -33,6 +33,12 @@ def create_crawl_item(**kwargs) -> CrawlItem:
 
 
 @sync_to_async
+def cont_id_exists(cont_id: str) -> bool:
+    """Check if a CrawlItem with the given cont_id already exists."""
+    return CrawlItem.objects.filter(cont_id=cont_id).exists()
+
+
+@sync_to_async
 def mark_task_done(task: CrawlTask, total_items: int) -> None:
     """Mark task as done in sync context."""
     task.mark_done(total_items=total_items)
@@ -139,6 +145,7 @@ async def _execute_crawl(task: CrawlTask) -> dict[str, Any]:
 
     # Step 2: Fetch detail for each article and save
     items_created = 0
+    items_skipped = 0
     async with HttpClient() as client:
         for i, article in enumerate(articles):
             cont_id = str(article.get("contId", ""))
@@ -146,6 +153,12 @@ async def _execute_crawl(task: CrawlTask) -> dict[str, Any]:
                 continue
 
             try:
+                # Skip if article already exists in database
+                if await cont_id_exists(cont_id):
+                    logger.debug(f"[{i + 1}/{len(articles)}] Skipping duplicate: {cont_id}")
+                    items_skipped += 1
+                    continue
+
                 logger.debug(f"[{i + 1}/{len(articles)}] Fetching article {cont_id}")
 
                 # Fetch article detail
@@ -197,11 +210,18 @@ async def _execute_crawl(task: CrawlTask) -> dict[str, Any]:
     # Step 4: Mark task as done
     await mark_task_done(task, total_items=items_created)
 
-    logger.info(f"Crawl task completed: {task.id}, items: {items_created}")
+    if items_skipped > 0:
+        logger.info(
+            f"Crawl task completed: {task.id}, "
+            f"items created: {items_created}, duplicates skipped: {items_skipped}"
+        )
+    else:
+        logger.info(f"Crawl task completed: {task.id}, items: {items_created}")
 
     return {
         "task_id": str(task.id),
         "items_crawled": items_created,
+        "items_skipped": items_skipped,
         "channel_id": channel_id,
         "status": "completed",
     }

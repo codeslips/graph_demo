@@ -93,7 +93,7 @@ class CrawlItem(models.Model):
 
     # Article identifiers
     cont_id = models.CharField(
-        max_length=50, db_index=True, help_text="ThePaper content ID"
+        max_length=50, unique=True, help_text="ThePaper content ID"
     )
     url = models.CharField(max_length=500, help_text="Article URL")
 
