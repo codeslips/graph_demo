@@ -18,12 +18,16 @@ const isGraphView = computed(() => route.name === 'graph')
       </div>
 
       <div class="nav-links">
+        
         <RouterLink to="/" class="nav-link" :class="{ active: route.name === 'home' }">
           首页
         </RouterLink>
         <RouterLink to="/tasks" class="nav-link" :class="{ active: route.name === 'tasks' }">
           任务
         </RouterLink>
+        <a href="https://github.com/codeslips/graph_demo" target="_blank" class="nav-link">
+          GitHub
+        </a>
       </div>
     </nav>
 
