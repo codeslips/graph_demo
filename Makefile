@@ -2,7 +2,7 @@
 # ThePaper Graph - Makefile
 # ===========================================
 
-.PHONY: help up down build logs shell migrate makemigrations test clean
+.PHONY: help up down build logs shell migrate makemigrations createsuperuser test clean
 
 # Default target
 help:
@@ -19,6 +19,7 @@ help:
 	@echo "  make bash         - Open bash in backend container"
 	@echo "  make migrate      - Run database migrations"
 	@echo "  make makemigrations - Create new migrations"
+	@echo "  make createsuperuser - Create Django admin user"
 	@echo "  make clean        - Remove containers and volumes"
 	@echo "  make ps           - Show running containers"
 
@@ -60,6 +61,9 @@ migrate:
 
 makemigrations:
 	docker compose -f docker-compose.yml -f docker-compose.dev.yml exec backend python manage.py makemigrations
+
+createsuperuser:
+	docker compose -f docker-compose.yml -f docker-compose.dev.yml exec backend python manage.py createsuperuser
 
 # Cleanup
 clean:

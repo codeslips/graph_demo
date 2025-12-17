@@ -1,4 +1,7 @@
-export { default as request } from './request'
+/**
+ * Type definitions index.
+ */
+
 export * from './crawl'
 export * from './graph'
 

@@ -41,6 +41,6 @@
 
 - [x] 6.1 Verify `docker compose config` validates successfully
 - [x] 6.2 Verify `docker compose -f docker-compose.yml -f docker-compose.dev.yml config` validates
-- [ ] 6.3 Verify backend responds on http://localhost:8000 (requires `make up`)
-- [ ] 6.4 Verify frontend responds on http://localhost:5173 (requires `make up`)
-- [ ] 6.5 Verify Neo4j browser accessible on http://localhost:7474 (requires `make up`)
+- [x] 6.3 Verify backend responds on http://localhost:8000 (requires `make up`)
+- [x] 6.4 Verify frontend responds on http://localhost:5173 (requires `make up`)
+- [x] 6.5 Verify Neo4j browser accessible on http://localhost:7474 (requires `make up`)

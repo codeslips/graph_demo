@@ -6,17 +6,18 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI
 
+from apps.crawl.api import router as crawl_router
+from apps.graph.api import router as graph_router
+
 api = NinjaAPI(
     title="ThePaper Graph API",
     version="1.0.0",
     description="API for web crawling and graph visualization",
 )
 
-# Register API routers here when implementing business logic
-# from apps.crawl.api import router as crawl_router
-# from apps.graph.api import router as graph_router
-# api.add_router("/crawl/", crawl_router)
-# api.add_router("/graph/", graph_router)
+# Register API routers
+api.add_router("/crawl/", crawl_router)
+api.add_router("/graph/", graph_router)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
