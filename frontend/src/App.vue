@@ -4,7 +4,7 @@ import { computed } from 'vue'
 
 const route = useRoute()
 
-const isGraphView = computed(() => route.name === 'graph')
+const isGraphView = computed(() => route.name === 'graph' || route.name === 'media-graph')
 </script>
 
 <template>
@@ -27,6 +27,9 @@ const isGraphView = computed(() => route.name === 'graph')
         </RouterLink>
         <RouterLink to="/media" class="nav-link" :class="{ active: route.name === 'media' || route.name === 'media-detail' }">
           媒体数据
+        </RouterLink>
+        <RouterLink to="/media-graph" class="nav-link" :class="{ active: route.name === 'media-graph' }">
+          媒体图谱
         </RouterLink>
         <a href="https://github.com/codeslips/graph_demo" target="_blank" class="nav-link">
           GitHub

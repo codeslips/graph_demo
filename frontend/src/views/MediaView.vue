@@ -1,17 +1,33 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useMediaStore } from '@/stores/media'
+import { triggerMediaSync, getMediaSyncStatus } from '@/api/mediaGraph'
 import PlatformTabs from '@/components/media/PlatformTabs.vue'
 import MediaFilters from '@/components/media/MediaFilters.vue'
 import MediaDataTable from '@/components/media/MediaDataTable.vue'
 import MediaFormModal from '@/components/media/MediaFormModal.vue'
 import DeleteConfirmModal from '@/components/media/DeleteConfirmModal.vue'
 
+const router = useRouter()
 const mediaStore = useMediaStore()
+
+// Sync state
+const syncing = ref(false)
+const syncProgress = ref(0)
+const syncMessage = ref('')
+let syncPollInterval: ReturnType<typeof setInterval> | null = null
 
 onMounted(async () => {
   await mediaStore.fetchApiStatus()
   await mediaStore.fetchRecords()
+  await checkSyncStatus()
+})
+
+onUnmounted(() => {
+  if (syncPollInterval) {
+    clearInterval(syncPollInterval)
+  }
 })
 
 // Refetch when platform or entity changes
@@ -31,6 +47,78 @@ function handleBatchDelete() {
     mediaStore.openDeleteModal(mediaStore.selectedIds)
   }
 }
+
+function goToGraph() {
+  router.push('/media-graph')
+}
+
+async function handleSync() {
+  syncing.value = true
+  syncMessage.value = '同步中...'
+  
+  try {
+    const response = await triggerMediaSync()
+    
+    // Sync mode returns result directly
+    if (response.result) {
+      const totals = response.result.totals
+      if (totals) {
+        syncMessage.value = `完成! 内容: ${totals.content_synced}, 关键词: ${totals.keywords_synced}`
+      } else {
+        syncMessage.value = '同步完成!'
+      }
+      syncing.value = false
+      setTimeout(() => { syncMessage.value = '' }, 5000)
+    } else if (response.task_id) {
+      // Async mode - poll for status
+      syncMessage.value = '后台同步中...'
+      pollSyncStatus()
+    }
+  } catch (e) {
+    console.error('Failed to trigger sync:', e)
+    syncing.value = false
+    syncMessage.value = '同步失败'
+    setTimeout(() => { syncMessage.value = '' }, 3000)
+  }
+}
+
+async function checkSyncStatus() {
+  try {
+    const status = await getMediaSyncStatus()
+    if (status.status === 'running') {
+      syncing.value = true
+      syncProgress.value = status.progress
+      syncMessage.value = `同步中 ${status.progress}%`
+      pollSyncStatus()
+    }
+  } catch (e) {
+    console.error('Failed to check sync status:', e)
+  }
+}
+
+function pollSyncStatus() {
+  if (syncPollInterval) {
+    clearInterval(syncPollInterval)
+  }
+  
+  syncPollInterval = setInterval(async () => {
+    try {
+      const status = await getMediaSyncStatus()
+      syncProgress.value = status.progress
+      syncMessage.value = `同步中 ${status.progress}%`
+      
+      if (status.status === 'idle') {
+        clearInterval(syncPollInterval!)
+        syncPollInterval = null
+        syncing.value = false
+        syncMessage.value = '同步完成!'
+        setTimeout(() => { syncMessage.value = '' }, 3000)
+      }
+    } catch (e) {
+      console.error('Failed to poll sync status:', e)
+    }
+  }, 2000)
+}
 </script>
 
 <template>
@@ -48,6 +136,18 @@ function handleBatchDelete() {
           @click="handleBatchDelete"
         >
           🗑️ 批量删除 ({{ mediaStore.selectedIds.length }})
+        </button>
+        <button class="btn-graph" @click="goToGraph">
+          🕸️ 查看图谱
+        </button>
+        <button 
+          class="btn-sync" 
+          :disabled="syncing"
+          @click="handleSync"
+        >
+          <span v-if="syncing" class="sync-icon spinning">⟳</span>
+          <span v-else class="sync-icon">⟳</span>
+          {{ syncing ? syncMessage : '同步到 Neo4j' }}
         </button>
         <button class="btn-create" @click="handleCreate">
           ➕ 新建
@@ -124,7 +224,9 @@ function handleBatchDelete() {
 }
 
 .btn-create,
-.btn-batch-delete {
+.btn-batch-delete,
+.btn-sync,
+.btn-graph {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -155,6 +257,43 @@ function handleBatchDelete() {
 
 .btn-batch-delete:hover {
   background: rgba(239, 68, 68, 0.2);
+}
+
+.btn-sync {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+}
+
+.btn-sync:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.2);
+}
+
+.btn-sync:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.sync-icon {
+  font-size: 1rem;
+}
+
+.sync-icon.spinning {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-graph {
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: #a78bfa;
+}
+
+.btn-graph:hover {
+  background: rgba(139, 92, 246, 0.2);
 }
 
 .disabled-warning,

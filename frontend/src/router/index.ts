@@ -31,6 +31,11 @@ const routes: RouteRecordRaw[] = [
     path: '/media/:platform/:entityType/:id',
     name: 'media-detail',
     component: () => import('@/views/MediaDetailView.vue')
+  },
+  {
+    path: '/media-graph',
+    name: 'media-graph',
+    component: () => import('@/views/MediaGraphView.vue')
   }
 ]
 
