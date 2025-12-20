@@ -21,3 +21,16 @@ class CrawlType(models.TextChoices):
     ARTICLE = "article", "Single Article"
     CHANNEL = "channel", "Full Channel"
 
+
+class MediaPlatform(models.TextChoices):
+    """Supported media platforms for optional media crawl integration."""
+
+    NONE = "", "None"
+    BILIBILI = "bilibili", "Bilibili"
+    DOUYIN = "douyin", "Douyin"
+    KUAISHOU = "kuaishou", "Kuaishou"
+    WEIBO = "weibo", "Weibo"
+    XHS = "xhs", "Xiaohongshu"
+    TIEBA = "tieba", "Tieba"
+    ZHIHU = "zhihu", "Zhihu"
+

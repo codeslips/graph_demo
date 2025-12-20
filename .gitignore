@@ -2,6 +2,8 @@
 # ThePaper Graph - Git Ignore
 # ===========================================
 
+data/
+
 # Environment
 .env
 .env.local

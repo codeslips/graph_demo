@@ -8,6 +8,7 @@ from ninja import NinjaAPI
 
 from apps.crawl.api import router as crawl_router
 from apps.graph.api import router as graph_router
+from apps.media_crawl.api import router as media_router
 
 api = NinjaAPI(
     title="ThePaper Graph API",
@@ -18,6 +19,7 @@ api = NinjaAPI(
 # Register API routers
 api.add_router("/crawl/", crawl_router)
 api.add_router("/graph/", graph_router)
+api.add_router("/media/", media_router)
 
 urlpatterns = [
     path("admin/", admin.site.urls),

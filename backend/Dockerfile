@@ -7,7 +7,7 @@ ENV PIP_NO_CACHE_DIR=1
 
 WORKDIR /app
 
-# # Install system dependencies
+# Install system dependencies (optional, for psycopg2 if not using binary)
 # RUN apt-get update && apt-get install -y --no-install-recommends \
 #     build-essential \
 #     libpq-dev \

@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # Local apps
     "apps.crawl",
     "apps.graph",
+    "apps.media_crawl",
 ]
 
 MIDDLEWARE = [
@@ -72,8 +73,23 @@ DATABASES = {
         "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "postgres"),
         "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
         "PORT": os.environ.get("POSTGRES_PORT", "5432"),
-    }
+    },
+    "mysql": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.environ.get("MYSQL_DATABASE", "media_crawl"),
+        "USER": os.environ.get("MYSQL_USER", "root"),
+        "PASSWORD": os.environ.get("MYSQL_PASSWORD", ""),
+        "HOST": os.environ.get("MYSQL_HOST", "localhost"),
+        "PORT": os.environ.get("MYSQL_PORT", "3306"),
+        "OPTIONS": {
+            "charset": "utf8mb4",
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
+    },
 }
+
+# Database routers - route media_crawl app to MySQL
+DATABASE_ROUTERS = ["apps.media_crawl.db_router.MediaCrawlRouter"]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -131,4 +147,14 @@ CRAWL_USER_AGENT = os.environ.get(
     "CRAWL_USER_AGENT",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
 )
+
+# Media Crawl Configuration
+MEDIA_CRAWL_ENABLED = os.environ.get("MEDIA_CRAWL_ENABLED", "True").lower() in (
+    "true",
+    "1",
+    "yes",
+)
+MEDIA_CRAWL_INTEGRATION_ENABLED = os.environ.get(
+    "MEDIA_CRAWL_INTEGRATION_ENABLED", "False"
+).lower() in ("true", "1", "yes")
 

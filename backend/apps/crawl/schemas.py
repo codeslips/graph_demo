@@ -18,6 +18,8 @@ class CreateTaskRequest(Schema):
 
     target_url: str
     crawl_type: str = CrawlType.NEWS_LIST.value
+    media_platform: str = ""
+    media_crawl_enabled: bool = False
 
 
 class TaskResponse(Schema):
@@ -32,6 +34,8 @@ class TaskResponse(Schema):
     started_at: datetime | None = None
     finished_at: datetime | None = None
     error_message: str = ""
+    media_platform: str = ""
+    media_crawl_enabled: bool = False
 
     @staticmethod
     def from_orm(obj) -> "TaskResponse":
@@ -46,6 +50,8 @@ class TaskResponse(Schema):
             started_at=obj.started_at,
             finished_at=obj.finished_at,
             error_message=obj.error_message,
+            media_platform=obj.media_platform,
+            media_crawl_enabled=obj.media_crawl_enabled,
         )
 
 

@@ -9,7 +9,7 @@ import uuid
 from django.db import models
 from django.utils import timezone
 
-from .enums import CrawlType, TaskStatus
+from .enums import CrawlType, MediaPlatform, TaskStatus
 
 
 class CrawlTask(models.Model):
@@ -44,6 +44,19 @@ class CrawlTask(models.Model):
     error_message = models.TextField(blank=True, help_text="Error details if failed")
     celery_task_id = models.CharField(
         max_length=255, blank=True, help_text="Celery task ID for tracking"
+    )
+
+    # Media crawl integration fields (optional)
+    media_platform = models.CharField(
+        max_length=20,
+        choices=MediaPlatform.choices,
+        default=MediaPlatform.NONE,
+        blank=True,
+        help_text="Target media platform for crawl (optional)",
+    )
+    media_crawl_enabled = models.BooleanField(
+        default=False,
+        help_text="Whether to trigger media platform crawl for this task",
     )
 
     class Meta:
