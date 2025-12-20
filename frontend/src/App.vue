@@ -25,6 +25,9 @@ const isGraphView = computed(() => route.name === 'graph')
         <RouterLink to="/tasks" class="nav-link" :class="{ active: route.name === 'tasks' }">
           任务
         </RouterLink>
+        <RouterLink to="/media" class="nav-link" :class="{ active: route.name === 'media' || route.name === 'media-detail' }">
+          媒体数据
+        </RouterLink>
         <a href="https://github.com/codeslips/graph_demo" target="_blank" class="nav-link">
           GitHub
         </a>
