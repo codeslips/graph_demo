@@ -9,4 +9,5 @@ from .weibo import *
 from .xhs import *
 from .tieba import *
 from .zhihu import *
+from .report import *
 

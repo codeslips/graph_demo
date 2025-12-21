@@ -8,9 +8,25 @@ import MediaFilters from '@/components/media/MediaFilters.vue'
 import MediaDataTable from '@/components/media/MediaDataTable.vue'
 import MediaFormModal from '@/components/media/MediaFormModal.vue'
 import DeleteConfirmModal from '@/components/media/DeleteConfirmModal.vue'
+import ReportGeneratorModal from '@/components/media/ReportGeneratorModal.vue'
 
 const router = useRouter()
 const mediaStore = useMediaStore()
+
+// Report generator modal state
+const showReportModal = ref(false)
+
+function openReportModal() {
+  showReportModal.value = true
+}
+
+function closeReportModal() {
+  showReportModal.value = false
+}
+
+function handleReportSaved() {
+  // Optionally navigate to reports or show a toast
+}
 
 // Sync state
 const syncing = ref(false)
@@ -141,6 +157,9 @@ function pollSyncStatus() {
         >
           🗑️ 批量删除 ({{ mediaStore.selectedIds.length }})
         </button>
+        <button class="btn-report" @click="openReportModal">
+          📊 生成分析报告
+        </button>
         <button class="btn-crawler" @click="goToCrawler">
           🕷️ 爬虫任务
         </button>
@@ -189,6 +208,11 @@ function pollSyncStatus() {
     <!-- Modals -->
     <MediaFormModal />
     <DeleteConfirmModal />
+    <ReportGeneratorModal
+      :visible="showReportModal"
+      @close="closeReportModal"
+      @saved="handleReportSaved"
+    />
   </div>
 </template>
 
@@ -234,7 +258,8 @@ function pollSyncStatus() {
 .btn-batch-delete,
 .btn-sync,
 .btn-graph,
-.btn-crawler {
+.btn-crawler,
+.btn-report {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -312,6 +337,16 @@ function pollSyncStatus() {
 
 .btn-crawler:hover {
   background: rgba(251, 146, 60, 0.2);
+}
+
+.btn-report {
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #60a5fa;
+}
+
+.btn-report:hover {
+  background: rgba(59, 130, 246, 0.2);
 }
 
 .disabled-warning,

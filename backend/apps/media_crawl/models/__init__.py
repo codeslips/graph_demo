@@ -14,6 +14,7 @@ from .weibo import WeiboNote, WeiboNoteComment, WeiboCreator
 from .xhs import XhsCreator, XhsNote, XhsNoteComment
 from .tieba import TiebaNote, TiebaComment, TiebaCreator
 from .zhihu import ZhihuContent, ZhihuComment, ZhihuCreator
+from .report import AnalysisReport
 
 __all__ = [
     # Bilibili
@@ -45,5 +46,7 @@ __all__ = [
     "ZhihuContent",
     "ZhihuComment",
     "ZhihuCreator",
+    # Report
+    "AnalysisReport",
 ]
 

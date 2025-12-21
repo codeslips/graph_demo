@@ -31,6 +31,9 @@ const isGraphView = computed(() => route.name === 'graph' || route.name === 'med
         <RouterLink to="/media-graph" class="nav-link" :class="{ active: route.name === 'media-graph' }">
           媒体图谱
         </RouterLink>
+        <RouterLink to="/reports" class="nav-link" :class="{ active: route.name === 'reports' || route.name === 'report-detail' }">
+          报告列表
+        </RouterLink>
         <RouterLink to="/chat" class="nav-link" :class="{ active: route.name === 'chat' }">
           AI 对话
         </RouterLink>

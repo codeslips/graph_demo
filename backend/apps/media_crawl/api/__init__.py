@@ -12,6 +12,7 @@ from .weibo import router as weibo_router
 from .xhs import router as xhs_router
 from .tieba import router as tieba_router
 from .zhihu import router as zhihu_router
+from .report import router as report_router
 
 # Main media crawl router
 router = Router(tags=["Media Crawl"])
@@ -24,6 +25,7 @@ router.add_router("/weibo", weibo_router)
 router.add_router("/xhs", xhs_router)
 router.add_router("/tieba", tieba_router)
 router.add_router("/zhihu", zhihu_router)
+router.add_router("/reports", report_router)
 
 
 # ============================================================================

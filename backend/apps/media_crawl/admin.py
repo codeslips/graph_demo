@@ -209,3 +209,18 @@ class ZhihuCreatorAdmin(MultiDBModelAdmin):
     list_display = ["id", "user_id", "user_nickname", "fans", "anwser_count"]
     search_fields = ["user_id", "user_nickname"]
 
+
+# ============== Analysis Report ==============
+from .models import AnalysisReport
+
+
+@admin.register(AnalysisReport)
+class AnalysisReportAdmin(admin.ModelAdmin):
+    """Admin for analysis reports - uses default PostgreSQL database."""
+
+    list_display = ["id", "title", "platform", "source_keyword", "record_count", "created_at"]
+    list_filter = ["platform"]
+    search_fields = ["title", "source_keyword"]
+    ordering = ["-created_at"]
+    readonly_fields = ["id", "created_at"]
+
