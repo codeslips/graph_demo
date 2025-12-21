@@ -74,6 +74,15 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/1
       - NEO4J_URI=bolt://neo4j:7687
+      # Coze AI Configuration (set in .env file)
+      - COZE_PAT=${COZE_PAT:-}
+      - COZE_BOT_ID=${COZE_BOT_ID:-}
+      - COZE_API_BASE_URL=${COZE_API_BASE_URL:-https://api.coze.cn}
+    # DNS servers for external domain resolution (Coze API)
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+      - 1.1.1.1
     ports:
       - "8000:8000"
     depends_on:

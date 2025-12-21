@@ -41,6 +41,11 @@ const routes: RouteRecordRaw[] = [
     path: '/media-graph',
     name: 'media-graph',
     component: () => import('@/views/MediaGraphView.vue')
+  },
+  {
+    path: '/chat',
+    name: 'chat',
+    component: () => import('@/views/CozeChatView.vue')
   }
 ]
 

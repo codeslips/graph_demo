@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     "apps.crawl",
     "apps.graph",
     "apps.media_crawl",
+    "apps.coze",
 ]
 
 MIDDLEWARE = [
@@ -162,4 +163,9 @@ MEDIA_CRAWL_INTEGRATION_ENABLED = os.environ.get(
 MEDIA_CRAWL_SERVICE_URL = os.environ.get(
     "MEDIA_CRAWL_SERVICE_URL", "http://localhost:8777"
 )
+
+# Coze API Configuration
+COZE_PAT = os.environ.get("COZE_PAT", "")
+COZE_BOT_ID = os.environ.get("COZE_BOT_ID", "")
+COZE_API_BASE_URL = os.environ.get("COZE_API_BASE_URL", "https://api.coze.cn")
 
