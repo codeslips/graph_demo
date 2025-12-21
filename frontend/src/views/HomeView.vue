@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
     <section class="hero">
       <div class="hero-content">
         <h1 class="hero-title">
-          <span class="gradient-text">澎湃图谱</span>
+          <span class="gradient-text">旅游分析平台</span>
         </h1>
         <p class="hero-subtitle">
           通过交互式知识图谱探索新闻关系。

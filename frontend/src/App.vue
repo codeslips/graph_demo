@@ -13,7 +13,7 @@ const isGraphView = computed(() => route.name === 'graph' || route.name === 'med
       <div class="nav-brand">
         <RouterLink to="/" class="brand-link">
           <span class="brand-icon">📰</span>
-          <span class="brand-text">澎湃图谱</span>
+          <span class="brand-text">旅游分析平台</span>
         </RouterLink>
       </div>
 
