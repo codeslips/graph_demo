@@ -59,3 +59,49 @@ class FilterParams(Schema):
     create_time_to: Optional[int] = None
     source_keyword: Optional[str] = None
 
+
+# ============================================================================
+# Crawler Task Schemas
+# ============================================================================
+
+
+class CrawlerStartRequest(Schema):
+    """Request schema for starting a crawler task."""
+
+    platform: str  # xhs, douyin, bilibili, kuaishou, weibo, tieba, zhihu
+    login_type: str  # qrcode, cookie
+    crawler_type: str  # search, detail, creator
+    keywords: Optional[str] = ""
+    specified_ids: Optional[str] = ""
+    creator_ids: Optional[str] = ""
+    start_page: Optional[int] = 1
+    enable_comments: Optional[bool] = True
+    enable_sub_comments: Optional[bool] = False
+    save_option: Optional[str] = "db"
+    cookies: Optional[str] = ""
+    headless: Optional[bool] = False
+
+
+class CrawlerStartResponse(Schema):
+    """Response schema for crawler start."""
+
+    success: bool
+    message: str
+
+
+class CrawlerStatusResponse(Schema):
+    """Response schema for crawler status."""
+
+    status: str  # running, idle
+    platform: Optional[str] = None
+    crawler_type: Optional[str] = None
+    started_at: Optional[str] = None
+    error_message: Optional[str] = None
+
+
+class CrawlerErrorResponse(Schema):
+    """Error response schema for crawler endpoints."""
+
+    detail: str
+    code: str
+

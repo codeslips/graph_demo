@@ -28,6 +28,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/MediaView.vue')
   },
   {
+    path: '/media/crawl',
+    name: 'media-crawl',
+    component: () => import('@/views/MediaCrawlTaskView.vue')
+  },
+  {
     path: '/media/:platform/:entityType/:id',
     name: 'media-detail',
     component: () => import('@/views/MediaDetailView.vue')

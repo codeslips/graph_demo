@@ -158,3 +158,8 @@ MEDIA_CRAWL_INTEGRATION_ENABLED = os.environ.get(
     "MEDIA_CRAWL_INTEGRATION_ENABLED", "False"
 ).lower() in ("true", "1", "yes")
 
+# External Media Crawl Service URL
+MEDIA_CRAWL_SERVICE_URL = os.environ.get(
+    "MEDIA_CRAWL_SERVICE_URL", "http://localhost:8777"
+)
+

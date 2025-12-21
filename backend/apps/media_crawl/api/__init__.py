@@ -173,3 +173,134 @@ def get_sync_status(request):
         lastSyncTime=status_data.get("lastSyncTime"),
         lastResult=status_data.get("lastResult"),
     )
+
+
+# ============================================================================
+# External Crawler Service Proxy Endpoints
+# ============================================================================
+
+from apps.media_crawl.schemas import (
+    CrawlerStartRequest,
+    CrawlerStartResponse,
+    CrawlerStatusResponse,
+    CrawlerErrorResponse,
+)
+
+
+@router.post(
+    "/crawler/start",
+    response={200: CrawlerStartResponse, 503: CrawlerErrorResponse},
+    tags=["Media Crawler"],
+    summary="Start a new crawler task",
+)
+def start_crawler_task(request, payload: CrawlerStartRequest):
+    """
+    Start a new crawler task via the external media crawl service.
+
+    Proxies the request to the external crawler service configured via
+    MEDIA_CRAWL_SERVICE_URL environment variable.
+    """
+    import httpx
+    from django.conf import settings
+
+    # Check if media crawl is enabled
+    if not getattr(settings, "MEDIA_CRAWL_ENABLED", True):
+        return 503, CrawlerErrorResponse(
+            detail="Media crawl feature is disabled",
+            code="MEDIA_CRAWL_DISABLED",
+        )
+
+    service_url = getattr(settings, "MEDIA_CRAWL_SERVICE_URL", "http://localhost:8777")
+    endpoint = f"{service_url}/api/crawler/start"
+
+    try:
+        with httpx.Client(timeout=30.0) as client:
+            response = client.post(
+                endpoint,
+                json=payload.dict(),
+            )
+            response.raise_for_status()
+            return 200, CrawlerStartResponse(
+                success=True,
+                message="Crawler task started successfully",
+            )
+    except httpx.ConnectError:
+        return 503, CrawlerErrorResponse(
+            detail=f"Cannot connect to crawler service at {service_url}",
+            code="SERVICE_UNAVAILABLE",
+        )
+    except httpx.TimeoutException:
+        return 503, CrawlerErrorResponse(
+            detail="Crawler service request timed out",
+            code="SERVICE_TIMEOUT",
+        )
+    except httpx.HTTPStatusError as e:
+        return 503, CrawlerErrorResponse(
+            detail=f"Crawler service error: {e.response.text}",
+            code="SERVICE_ERROR",
+        )
+    except Exception as e:
+        return 503, CrawlerErrorResponse(
+            detail=f"Unexpected error: {str(e)}",
+            code="UNEXPECTED_ERROR",
+        )
+
+
+@router.get(
+    "/crawler/status",
+    response={200: CrawlerStatusResponse, 503: CrawlerErrorResponse},
+    tags=["Media Crawler"],
+    summary="Get current crawler task status",
+)
+def get_crawler_status(request):
+    """
+    Get the current status of the crawler task from the external service.
+
+    Proxies the request to the external crawler service configured via
+    MEDIA_CRAWL_SERVICE_URL environment variable.
+    """
+    import httpx
+    from django.conf import settings
+
+    # Check if media crawl is enabled
+    if not getattr(settings, "MEDIA_CRAWL_ENABLED", True):
+        return 503, CrawlerErrorResponse(
+            detail="Media crawl feature is disabled",
+            code="MEDIA_CRAWL_DISABLED",
+        )
+
+    service_url = getattr(settings, "MEDIA_CRAWL_SERVICE_URL", "http://localhost:8777")
+    endpoint = f"{service_url}/api/crawler/status"
+
+    try:
+        with httpx.Client(timeout=10.0) as client:
+            response = client.get(endpoint)
+            response.raise_for_status()
+            data = response.json()
+            return 200, CrawlerStatusResponse(
+                status=data.get("status", "idle"),
+                platform=data.get("platform"),
+                crawler_type=data.get("crawler_type"),
+                started_at=data.get("started_at"),
+                error_message=data.get("error_message"),
+            )
+    except httpx.ConnectError:
+        return 503, CrawlerErrorResponse(
+            detail=f"Cannot connect to crawler service at {service_url}",
+            code="SERVICE_UNAVAILABLE",
+        )
+    except httpx.TimeoutException:
+        return 503, CrawlerErrorResponse(
+            detail="Crawler service request timed out",
+            code="SERVICE_TIMEOUT",
+        )
+    except httpx.HTTPStatusError as e:
+        return 503, CrawlerErrorResponse(
+            detail=f"Crawler service error: {e.response.text}",
+            code="SERVICE_ERROR",
+        )
+    except Exception as e:
+        return 503, CrawlerErrorResponse(
+            detail=f"Unexpected error: {str(e)}",
+            code="UNEXPECTED_ERROR",
+        )

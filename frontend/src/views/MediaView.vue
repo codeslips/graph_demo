@@ -52,6 +52,10 @@ function goToGraph() {
   router.push('/media-graph')
 }
 
+function goToCrawler() {
+  router.push('/media/crawl')
+}
+
 async function handleSync() {
   syncing.value = true
   syncMessage.value = '同步中...'
@@ -136,6 +140,9 @@ function pollSyncStatus() {
           @click="handleBatchDelete"
         >
           🗑️ 批量删除 ({{ mediaStore.selectedIds.length }})
+        </button>
+        <button class="btn-crawler" @click="goToCrawler">
+          🕷️ 爬虫任务
         </button>
         <button class="btn-graph" @click="goToGraph">
           🕸️ 查看图谱
@@ -226,7 +233,8 @@ function pollSyncStatus() {
 .btn-create,
 .btn-batch-delete,
 .btn-sync,
-.btn-graph {
+.btn-graph,
+.btn-crawler {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -294,6 +302,16 @@ function pollSyncStatus() {
 
 .btn-graph:hover {
   background: rgba(139, 92, 246, 0.2);
+}
+
+.btn-crawler {
+  background: rgba(251, 146, 60, 0.1);
+  border: 1px solid rgba(251, 146, 60, 0.3);
+  color: #fb923c;
+}
+
+.btn-crawler:hover {
+  background: rgba(251, 146, 60, 0.2);
 }
 
 .disabled-warning,
