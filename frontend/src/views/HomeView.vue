@@ -1,307 +1,276 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { useDashboard } from '@/composables/useDashboard'
+import DashboardStats from '@/components/dashboard/DashboardStats.vue'
+import WorkflowGuide from '@/components/dashboard/WorkflowGuide.vue'
+import QuickActions from '@/components/dashboard/QuickActions.vue'
+import RecentActivity from '@/components/dashboard/RecentActivity.vue'
+import FeatureCards from '@/components/dashboard/FeatureCards.vue'
+
+const router = useRouter()
+const { stats, recentReports, loading, error, refresh } = useDashboard()
 </script>
 
 <template>
   <div class="home-view">
-    <section class="hero">
-      <div class="hero-content">
-        <h1 class="hero-title">
+    <!-- Header Section -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1 class="title">
           <span class="gradient-text">旅游分析平台</span>
         </h1>
-        <p class="hero-subtitle">
-          通过交互式知识图谱探索新闻关系。
-          自动抓取澎湃新闻文章，并可视化频道、文章和标签之间的连接。
+        <p class="subtitle">
+          多平台媒体数据采集、智能分析与知识图谱可视化
         </p>
-        <div class="hero-actions">
-          <RouterLink to="/tasks" class="btn btn-primary">
-            开始使用 →
-          </RouterLink>
-        </div>
       </div>
+      <button class="refresh-btn" :disabled="loading" @click="refresh">
+        <span class="refresh-icon" :class="{ spinning: loading }">⟳</span>
+        刷新数据
+      </button>
+    </header>
 
-      <div class="hero-visual">
-        <div class="graph-preview">
-          <div class="node node-channel">频道</div>
-          <div class="edge edge-1"></div>
-          <div class="node node-article">文章</div>
-          <div class="edge edge-2"></div>
-          <div class="node node-tag">标签</div>
-        </div>
-      </div>
+    <!-- Error Banner -->
+    <div v-if="error" class="error-banner">
+      <span class="error-icon">⚠️</span>
+      <span>{{ error }}</span>
+      <button class="dismiss-btn" @click="error = null">✕</button>
+    </div>
+
+    <!-- Statistics Cards -->
+    <section class="stats-section">
+      <DashboardStats :stats="stats" :loading="loading" />
     </section>
 
-    <section class="features">
-      <div class="feature-card">
-        <div class="feature-icon">🕷️</div>
-        <h3>智能爬取</h3>
-        <p>基于 Celery 的异步爬虫引擎。自动提取文章、作者和标签。</p>
+    <!-- Main Content: Workspace area (Workflow + Quick Actions) + Activity Side -->
+    <main class="dashboard-main">
+      <div class="workspace-area">
+        <section class="workflow-card">
+          <WorkflowGuide />
+        </section>
+        
+        <section class="quick-actions-card">
+          <QuickActions />
+        </section>
       </div>
 
-      <div class="feature-card">
-        <div class="feature-icon">🔗</div>
-        <h3>图谱存储</h3>
-        <p>Neo4j 图数据库存储文章、频道和关键词之间的关系。</p>
-      </div>
+      <aside class="activity-area">
+        <RecentActivity
+          :reports="recentReports"
+          :crawler-status="stats.crawlerStatus"
+          :loading="loading"
+        />
+      </aside>
+    </main>
 
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h3>交互式可视化</h3>
-        <p>使用力导向图探索知识图谱。点击节点查看详情。</p>
-      </div>
+    <!-- Feature Cards -->
+    <section class="features-section">
+      <FeatureCards />
     </section>
 
-    <section class="tech-stack">
-      <h2>Built With</h2>
-      <div class="tech-grid">
-        <div class="tech-item">Django + Ninja</div>
-        <div class="tech-item">Vue 3 + TypeScript</div>
-        <div class="tech-item">Neo4j</div>
-        <div class="tech-item">Celery + Redis</div>
-        <div class="tech-item">ECharts</div>
-        <div class="tech-item">PostgreSQL</div>
+    <!-- Tech Stack Footer -->
+    <footer class="tech-stack">
+      <div class="tech-grid" @click="router.push('/tech-stack')" style="cursor: pointer">
+        <span class="tech-tag">Django Ninja</span>
+        <span class="tech-tag">Vue 3 + TS</span>
+        <span class="tech-tag">Neo4j</span>
+        <span class="tech-tag">Celery</span>
+        <span class="tech-tag">Coze AI</span>
+        <span class="tech-tag more">查看完整架构 →</span>
       </div>
-    </section>
+    </footer>
   </div>
 </template>
 
 <style scoped>
 .home-view {
   min-height: calc(100vh - 60px);
-  padding: 0;
+  padding: 1.5rem 2rem;
+  background: 
+    radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.05) 0%, transparent 30%),
+    radial-gradient(circle at 100% 100%, rgba(139, 92, 246, 0.05) 0%, transparent 30%),
+    #0a0a0f;
+  color: #e2e8f0;
 }
 
-/* Hero Section */
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  padding: 4rem 2rem;
-  min-height: 500px;
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  background: radial-gradient(ellipse at 30% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.hero-content {
-  max-width: 560px;
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }
 
-.hero-title {
-  font-size: 3rem;
+.title {
+  font-size: 1.75rem;
   font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
+  letter-spacing: -0.025em;
+  margin: 0;
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #e0e0e0 0%, #8b5cf6 50%, #6366f1 100%);
+  background: linear-gradient(135deg, #fff 0%, #a5b4fc 50%, #818cf8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.hero-subtitle {
-  font-size: 1.1rem;
-  color: #8a8a9a;
-  line-height: 1.7;
-  margin-bottom: 2rem;
+.subtitle {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  font-weight: 400;
 }
 
-.hero-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.875rem 1.75rem;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
-  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(99, 102, 241, 0.4);
-}
-
-/* Graph Preview */
-.hero-visual {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.graph-preview {
-  position: relative;
-  width: 300px;
-  height: 300px;
-}
-
-.node {
-  position: absolute;
+.refresh-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 0.85rem;
-  font-weight: 600;
-  animation: float 3s ease-in-out infinite;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(8px);
 }
 
-.node-channel {
-  top: 50%;
-  left: 10%;
-  transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
-  background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
-  color: #1e1e2e;
-  animation-delay: 0s;
-}
-
-.node-article {
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  color: white;
-  animation-delay: 0.5s;
-}
-
-.node-tag {
-  top: 75%;
-  left: 75%;
-  transform: translate(-50%, -50%);
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-  color: #1e1e2e;
-  animation-delay: 1s;
-}
-
-.edge {
-  position: absolute;
-  background: linear-gradient(90deg, rgba(99, 102, 241, 0.5) 0%, rgba(139, 92, 246, 0.5) 100%);
-  height: 2px;
-  transform-origin: left center;
-}
-
-.edge-1 {
-  top: 35%;
-  left: 25%;
-  width: 80px;
-  transform: rotate(-25deg);
-}
-
-.edge-2 {
-  top: 50%;
-  left: 55%;
-  width: 80px;
-  transform: rotate(45deg);
-}
-
-@keyframes float {
-  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
-  50% { transform: translate(-50%, -50%) translateY(-10px); }
-}
-
-/* Features */
-.features {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  padding: 4rem 2rem;
-  background: linear-gradient(180deg, #0a0a12 0%, #12121a 100%);
-}
-
-.feature-card {
-  background: linear-gradient(135deg, #1e1e2e 0%, #252538 100%);
-  border: 1px solid #3d3d5c;
-  border-radius: 16px;
-  padding: 2rem;
-  text-align: center;
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
+.refresh-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06);
   border-color: #6366f1;
+  color: #fff;
+  transform: translateY(-1px);
 }
 
-.feature-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+.refresh-icon {
+  font-size: 1rem;
 }
 
-.feature-card h3 {
-  font-size: 1.1rem;
-  color: #e0e0e0;
-  margin-bottom: 0.75rem;
+.refresh-icon.spinning {
+  animation: spin 1s linear infinite;
 }
 
-.feature-card p {
-  font-size: 0.9rem;
-  color: #8a8a9a;
-  line-height: 1.6;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
-/* Tech Stack */
+/* Error Banner */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  color: #fca5a5;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Dashboard Main Grid */
+.dashboard-main {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.workspace-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.workflow-card, .quick-actions-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.25rem;
+  backdrop-filter: blur(12px);
+}
+
+.activity-area {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sections */
+.stats-section {
+  margin-bottom: 0.5rem;
+}
+
+.features-section {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+
+/* Tech Stack Footer */
 .tech-stack {
-  padding: 4rem 2rem;
+  padding: 2rem 0;
   text-align: center;
-}
-
-.tech-stack h2 {
-  font-size: 1.5rem;
-  color: #a0a0b0;
-  margin-bottom: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .tech-grid {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.tech-item {
-  padding: 0.625rem 1.25rem;
-  background: #1e1e2e;
-  border: 1px solid #3d3d5c;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  color: #a0a0b0;
+.tech-tag {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.2s ease;
+}
+
+.tech-grid:hover .tech-tag.more {
+  color: #818cf8;
+  border-color: rgba(99, 102, 241, 0.3);
+  background: rgba(99, 102, 241, 0.05);
 }
 
 /* Responsive */
-@media (max-width: 900px) {
-  .hero {
+@media (max-width: 1200px) {
+  .dashboard-main {
     grid-template-columns: 1fr;
-    text-align: center;
+  }
+  
+  .activity-area {
+    order: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-view {
+    padding: 1rem;
   }
 
-  .hero-content {
-    margin: 0 auto;
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 
-  .hero-visual {
-    display: none;
-  }
-
-  .features {
-    grid-template-columns: 1fr;
+  .title {
+    font-size: 1.5rem;
   }
 }
 </style>

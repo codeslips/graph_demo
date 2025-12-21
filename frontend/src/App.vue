@@ -37,6 +37,9 @@ const isGraphView = computed(() => route.name === 'graph' || route.name === 'med
         <RouterLink to="/chat" class="nav-link" :class="{ active: route.name === 'chat' }">
           AI 对话
         </RouterLink>
+        <RouterLink to="/tech-stack" class="nav-link" :class="{ active: route.name === 'tech-stack' }">
+          技术架构
+        </RouterLink>
         <a href="https://github.com/codeslips/graph_demo" target="_blank" class="nav-link">
           GitHub
         </a>
