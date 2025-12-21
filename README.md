@@ -826,12 +826,6 @@ coverage report
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
 
-## 📞 联系方式
-
-- 项目链接: [https://github.com/yourusername/media-travel-analysis](https://github.com/yourusername/media-travel-analysis)
-- 问题反馈: [Issues](https://github.com/yourusername/media-travel-analysis/issues)
-- 邮箱: your.email@example.com
-
 ## 🙏 致谢
 
 - [Django](https://www.djangoproject.com/) - Web框架
@@ -861,5 +855,3 @@ coverage report
 - 📋 **政策制定支持** - 为旅游政策制定提供数据依据
 
 ---
-
-⭐ 如果这个项目对您的旅行业务有帮助，请给它一个星标！
