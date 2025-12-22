@@ -18,30 +18,37 @@ const isGraphView = computed(() => route.name === 'graph' || route.name === 'med
       </div>
 
       <div class="nav-links">
-        
         <RouterLink to="/" class="nav-link" :class="{ active: route.name === 'home' }">
-          首页
+          <span class="nav-icon">🏠</span>
+          <span class="nav-text">首页</span>
         </RouterLink>
         <RouterLink to="/tasks" class="nav-link" :class="{ active: route.name === 'tasks' }">
-          任务
+          <span class="nav-icon">📋</span>
+          <span class="nav-text">任务</span>
         </RouterLink>
         <RouterLink to="/media" class="nav-link" :class="{ active: route.name === 'media' || route.name === 'media-detail' }">
-          媒体数据
+          <span class="nav-icon">📊</span>
+          <span class="nav-text">媒体数据</span>
         </RouterLink>
         <RouterLink to="/media-graph" class="nav-link" :class="{ active: route.name === 'media-graph' }">
-          媒体图谱
+          <span class="nav-icon">🕸️</span>
+          <span class="nav-text">媒体图谱</span>
         </RouterLink>
         <RouterLink to="/reports" class="nav-link" :class="{ active: route.name === 'reports' || route.name === 'report-detail' }">
-          报告列表
+          <span class="nav-icon">📝</span>
+          <span class="nav-text">报告列表</span>
         </RouterLink>
         <RouterLink to="/chat" class="nav-link" :class="{ active: route.name === 'chat' }">
-          AI 对话
+          <span class="nav-icon">🤖</span>
+          <span class="nav-text">AI 对话</span>
         </RouterLink>
         <RouterLink to="/tech-stack" class="nav-link" :class="{ active: route.name === 'tech-stack' }">
-          技术架构
+          <span class="nav-icon">🏗️</span>
+          <span class="nav-text">技术架构</span>
         </RouterLink>
         <a href="https://github.com/codeslips/graph_demo" target="_blank" class="nav-link">
-          GitHub
+          <span class="nav-icon">🐙</span>
+          <span class="nav-text">GitHub</span>
         </a>
       </div>
     </nav>
@@ -109,6 +116,9 @@ const isGraphView = computed(() => route.name === 'graph' || route.name === 'med
 }
 
 .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: var(--radius-md);
   font-size: 0.875rem;
@@ -116,6 +126,10 @@ const isGraphView = computed(() => route.name === 'graph' || route.name === 'med
   color: var(--color-text-secondary);
   text-decoration: none;
   transition: all var(--transition-fast);
+}
+
+.nav-icon {
+  font-size: 1.125rem;
 }
 
 .nav-link:hover {
@@ -126,6 +140,49 @@ const isGraphView = computed(() => route.name === 'graph' || route.name === 'med
 .nav-link.active {
   color: var(--color-accent);
   background: rgba(99, 102, 241, 0.1);
+}
+
+@media (max-width: 1024px) {
+  .app-nav {
+    padding: 0 1rem;
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-brand {
+    height: 64px;
+    justify-content: center;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-links {
+    overflow-x: auto;
+    padding-bottom: 0.75rem;
+    gap: 0.25rem;
+    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-link {
+    flex-shrink: 0;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    min-width: 72px;
+    text-align: center;
+  }
+
+  .nav-icon {
+    font-size: 1.25rem;
+  }
 }
 
 .app-main {
