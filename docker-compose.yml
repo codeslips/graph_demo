@@ -131,6 +131,10 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     container_name: thepaper-frontend
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
     ports:
       - "5173:5173"
     volumes:
